@@ -6,6 +6,7 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const items = [
   {
@@ -38,21 +39,26 @@ const items = [
         key: "10",
         label: "Log out",
       },
-    
     ],
   },
-  
 ];
 
-export default function MenuContainer() {
+export default function MenuContainer({ setIsMenu, isMenu }) {
+  const navigate = useNavigate();
 
   const onClick = (e) => {
-    console.log("click ", e);
-
-    console.log(e.key)
-    if(e.key == 10){
-        localStorage.removeItem("rider");
+    console.log(e.key);
+    if (e.key == 10) {
+      localStorage.removeItem("rider");
+      navigate("/login");
+    } else if (e.key == 5) {
+      navigate("/profile");
+    } else if (e.key == 6) {
+      navigate("/recent-deliveries");
+    } else if (e.key == 7) {
+      navigate("/change-password");
     }
+    setIsMenu(!isMenu);
   };
 
   return (
@@ -62,7 +68,7 @@ export default function MenuContainer() {
           <Menu
             onClick={onClick}
             style={{
-              width: 256,
+              width: "100%  ",
             }}
             defaultSelectedKeys={["1"]}
             defaultOpenKeys={["sub1"]}

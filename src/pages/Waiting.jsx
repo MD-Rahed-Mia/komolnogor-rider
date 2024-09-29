@@ -9,7 +9,7 @@ import axios from "axios";
 import InTransit from "../components/InTransitOrder";
 import { io } from "socket.io-client";
 
-export default function RIderWaiting() {
+export default function Waiting() {
   const [currentOrder, setCurrentOrder] = useState(null);
   const [inTransitOrder, setInTransitOrder] = useState(null);
 

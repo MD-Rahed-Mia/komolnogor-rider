@@ -4,7 +4,7 @@ import RiderNavigation from "../../components/RiderNavigation";
 
 export default function Layout({ children }) {
   return (
-    <div className="w-full">
+    <div className="w-full h-screen overflow-hidden">
       <RiderTitle />
       {children}
       <RiderNavigation />

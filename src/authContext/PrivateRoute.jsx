@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 function PrivateRoute({ children }) {
   const { rider } = useContext(UserContext);
 
-  return rider ? children : <Navigate to="/rider/login" replace />;
+  return rider ? children : <Navigate to="/login" replace />;
 }
 
 export default PrivateRoute;

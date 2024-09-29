@@ -35,7 +35,7 @@ export default function RiderNavigation() {
           <CiDeliveryTruck />
         </NavLink>
         <NavLink
-          to={"/rider/current-order"}
+          to={"/recent-deliveries"}
           style={({ isActive }) => {
             return {
               backgroundColor: isActive ? "#1677ff" : "gray",
@@ -49,7 +49,7 @@ export default function RiderNavigation() {
           onClick={() => setIsMenu(!isMenu)}
           style={({ isActive }) => {
             return {
-              backgroundColor: isActive ? "#1677ff" : "gray",
+              backgroundColor: isMenu ? "#1677ff" : "gray",
             };
           }}
           className="text-xl cursor-pointer text-white w-10 h-10 rounded-full bg-white flex items-center justify-center"
@@ -58,9 +58,7 @@ export default function RiderNavigation() {
         </NavLink>
       </div>
 
-      {isMenu ? (
-        <MenuContainer />
-      ) : null}
+      {isMenu ? <MenuContainer setIsMenu={setIsMenu} isMenu={isMenu} /> : null}
     </div>
   );
 }

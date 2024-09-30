@@ -11,7 +11,7 @@ export default function RiderNavigation() {
 
   return (
     <div>
-      <div className="absolute bottom-0 left-0 min-h-[60px] bg-pink-600 w-full grid grid-cols-4 place-content-center justify-items-center">
+      <div className="absolute bottom-0 left-0 min-h-[60px] bg-gray-300 w-full grid grid-cols-4 place-content-center justify-items-center">
         <NavLink
           to={"/"}
           style={({ isActive }) => {

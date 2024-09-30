@@ -57,6 +57,8 @@ export default function MenuContainer({ setIsMenu, isMenu }) {
       navigate("/recent-deliveries");
     } else if (e.key == 7) {
       navigate("/change-password");
+    }else if (e.key == 9) {
+      navigate("/wallet");
     }
     setIsMenu(!isMenu);
   };

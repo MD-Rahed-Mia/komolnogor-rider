@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 import ChangePassword from "./pages/ChangePassword";
 import RecentDeliveries from "./pages/RecentDeliveries";
 import Register from "./pages/Register";
+import Wallet from "./pages/Wallet";
 
 function App() {
   return (
@@ -60,6 +61,15 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/wallet"
+            element={
+              <PrivateRoute>
+                <Wallet />
+              </PrivateRoute>
+            }
+          />
+
           <Route path="/register" element={<Register />} />
         </Routes>
       </BrowserRouter>

@@ -27,9 +27,12 @@ export default function Wallet() {
           </div>
 
           <div>
+            <h1 className="text-2xl text-center text-gray-500 font-extrabold">
+              Recent transaction
+            </h1>
             {wallet &&
               wallet?.transactionHistory.map((history, index) => {
-                return <RecentTransactionCard key={index} history={history}/>;
+                return <RecentTransactionCard key={index} history={history} />;
               })}
 
             {wallet && wallet?.transactionHistory.length == 0 ? (

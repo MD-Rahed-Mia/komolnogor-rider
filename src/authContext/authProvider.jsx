@@ -10,6 +10,8 @@ const localRider = JSON.parse(localStorage.getItem("rider"));
 const AuthProvider = ({ children }) => {
   const [rider, setRider] = useState(localRider);
 
+  console.log(document.cookie);
+
   useEffect(() => {
     async function getRiderProfile() {
 

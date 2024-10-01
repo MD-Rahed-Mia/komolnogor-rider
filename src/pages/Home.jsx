@@ -11,6 +11,8 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { rider } = useAuth();
 
+  console.log('Home');
+
   async function handleOk() {
     setIsModalOpen(false);
 

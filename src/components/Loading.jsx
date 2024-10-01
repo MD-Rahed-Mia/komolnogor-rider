@@ -7,7 +7,7 @@ export default function Loading() {
     <div className="w-full h-[80vh] flex items-center justify-center flex-col">
           <div>
             <h1 className="text-xl my-8 font-extrabold text-blue-500 ">
-              Please wait for new order
+              Please wait
             </h1>
           </div>
           <Flex align="center" gap="middle">
@@ -16,7 +16,7 @@ export default function Loading() {
                 <LoadingOutlined
                   spin
                   style={{
-                    fontSize: 80,
+                    fontSize: 50,
                   }}
                 />
               }

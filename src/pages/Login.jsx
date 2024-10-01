@@ -1,15 +1,15 @@
-import React from "react";
-import { Button, Form, Input } from "antd";
+import React, { useState, useEffect } from "react";
+import { Button, Form, Input, Spin } from "antd";
 import { apiPath } from "../../secret";
 import { useNavigate } from "react-router-dom";
 import { toast } from "alert";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   async function onFinish(values) {
-    console.log("values are: ", values);
-
+    setLoading(true);
     try {
       const apiResponse = await fetch(`${apiPath}/rider/login`, {
         method: "POST",
@@ -17,24 +17,26 @@ export default function Login() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: values.email.trim(), // Trim email
+          email: values.email.trim(),
           password: values.password,
         }),
+        credentials: "include",
       });
-      
+
       const result = await apiResponse.json();
-      
+
       if (result?.success) {
-        localStorage.setItem("rider", JSON.stringify(result.rider));
-        toast("Login successful.");
-        navigate("/"); 
-        return;
+        localStorage.setItem("rider", JSON.stringify(result?.rider));
+
+        window.location.href = "http://localhost:5173";
       } else {
-        toast(result?.message || "Login failed."); 
+        toast(result?.message || "Login failed.");
       }
     } catch (error) {
       console.error(`Error during login: ${error}`);
-      toast("An error occurred. Please try again."); 
+      toast("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -82,9 +84,11 @@ export default function Login() {
           </h1>
         </div>
 
-        <Form.Item
-          wrapperCol={{ offset: 8, span: 16 }}
-        >
+        <div className="flex items-center justify-center my-4 gap-4">
+          {loading && <Spin tip="Loading" size="large" />}
+        </div>
+
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
             Submit
           </Button>

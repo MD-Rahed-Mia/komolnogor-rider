@@ -14,8 +14,7 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     async function getRiderProfile() {
-
-      if(!localRider) return;
+      if (!localRider) return;
       try {
         axios.get(`${apiPath}/rider/profile/${localRider?.id}`).then((res) => {
           setRider(res.data.result.riderProfile);

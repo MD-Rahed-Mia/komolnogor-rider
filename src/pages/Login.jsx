@@ -25,9 +25,10 @@ export default function Login() {
 
       const result = await apiResponse.json();
 
+      console.log(result);
+
       if (result?.success) {
         localStorage.setItem("rider", JSON.stringify(result?.rider));
-
         navigate("/");
       } else {
         toast(result?.message || "Login failed.");

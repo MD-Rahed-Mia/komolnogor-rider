@@ -28,7 +28,7 @@ export default function Login() {
       if (result?.success) {
         localStorage.setItem("rider", JSON.stringify(result?.rider));
 
-        window.location.href = "http://localhost:5173";
+        navigate("/");
       } else {
         toast(result?.message || "Login failed.");
       }

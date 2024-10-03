@@ -11,6 +11,7 @@ import ChangePassword from "./pages/ChangePassword";
 import RecentDeliveries from "./pages/RecentDeliveries";
 import Register from "./pages/Register";
 import Wallet from "./pages/Wallet";
+import { SocketProvider } from "./authContext/socketProvider";
 
 function App() {
   return (
@@ -79,7 +80,9 @@ function App() {
 
 const WrappedApp = () => (
   <AuthProvider>
-    <App />
+    <SocketProvider>
+      <App />
+    </SocketProvider>
   </AuthProvider>
 );
 

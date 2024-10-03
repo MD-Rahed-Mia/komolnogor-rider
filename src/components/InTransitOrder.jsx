@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { Button, Card, Space } from "antd";
 import { apiPath, socketServer } from "../../secret";
 import { toast } from "alert";
-import { Socket } from "socket.io-client";
 import { useAuth } from "../authContext/authProvider";
 import { message, Popconfirm } from "antd";
 
@@ -54,21 +53,21 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
   //get localRider
   const { localRider } = useAuth();
 
-  useEffect(() => {
-    const socket = io(socketServer, {
-      auth: {
-        token: localRider?.token,
-      },
-    });
+  // useEffect(() => {
+  //   const socket = io(socketServer, {
+  //     auth: {
+  //       token: localRider?.token,
+  //     },
+  //   });
 
-    socket.emit("auth", localRider?.id);
+  //   socket.emit("auth", localRider?.id);
 
-    //recieve current or from customer directly
-    socket.on("notifyParcelIsReadyForPickupFromServer", (data) => {
-      setInTransitOrder(data);
-      //location.reload();
-    });
-  }, []);
+  //   //recieve current or from customer directly
+  //   socket.on("notifyParcelIsReadyForPickupFromServer", (data) => {
+  //     setInTransitOrder(data);
+  //     //location.reload();
+  //   });
+  // }, []);
 
   const confirm = (e) => {
     console.log(e);

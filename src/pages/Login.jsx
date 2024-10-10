@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Input, Spin } from "antd";
-import { apiPath } from "../../secret";
+import { apiAuthToken, apiPath } from "../../secret";
 import { useNavigate } from "react-router-dom";
 import { toast } from "alert";
 
@@ -15,10 +15,11 @@ export default function Login() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-auth-token": apiAuthToken,
         },
         body: JSON.stringify({
           email: values.email.trim(),
-          password: values.password,
+          password: values.password.trim(),
         }),
         credentials: "include",
       });

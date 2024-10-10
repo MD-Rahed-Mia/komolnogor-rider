@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
-import { apiPath } from "../../secret";
+import { apiAuthToken, apiPath } from "../../secret";
 import useFetch from "../customHooks/useFetch";
 
 const UserContext = createContext();
@@ -16,9 +16,15 @@ const AuthProvider = ({ children }) => {
     async function getRiderProfile() {
       if (!localRider) return;
       try {
-        axios.get(`${apiPath}/rider/profile/${localRider?.id}`).then((res) => {
-          setRider(res.data.result.riderProfile);
-        });
+        axios
+          .get(`${apiPath}/rider/profile/${localRider?.id}`, {
+            headers: {
+              "x-auth-token": apiAuthToken,
+            },
+          })
+          .then((res) => {
+            setRider(res.data.result.riderProfile);
+          });
       } catch (error) {
         throw new Error(error);
       }

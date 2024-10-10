@@ -3,7 +3,7 @@ import RiderLayout from "./layout/RiderLayout";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { Button, Input, Select } from "antd";
 import { toast } from "alert";
-import { apiPath } from "../../secret";
+import { apiAuthToken, apiPath } from "../../secret";
 import { useNavigate } from "react-router-dom";
 
 export default function Register() {
@@ -44,10 +44,11 @@ export default function Register() {
     }
 
     try {
-      const apiResponse = await fetch(`${apiPath}/rider/create`, {
+      const apiResponse = await fetch(`${apiPath}/rider/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-auth-token": apiAuthToken
         },
         body: JSON.stringify(formData),
       });

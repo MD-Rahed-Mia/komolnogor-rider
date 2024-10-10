@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import RiderLayout from "./layout/RiderLayout";
 import { Input, Button } from "antd";
-import { apiPath } from "../../secret";
+import { apiAuthToken, apiPath } from "../../secret";
 import { useAuth } from "../authContext/authProvider";
 import { toast } from "alert";
 
@@ -24,7 +24,7 @@ export default function ChangePassword() {
       return toast("Password is more than 6 digits.");
     }
 
-    if(formData?.newPassword !== formData?.confirmPassword){
+    if (formData?.newPassword !== formData?.confirmPassword) {
       return toast("confirm password not match.");
     }
 
@@ -33,6 +33,7 @@ export default function ChangePassword() {
         method: "PUT",
         headers: {
           "content-type": "application/json",
+          "x-auth-token": apiAuthToken,
         },
         body: JSON.stringify({
           ...formData,

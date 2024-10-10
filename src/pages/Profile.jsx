@@ -39,7 +39,7 @@ export default function Profile() {
 
         <div className="w-4/5 mx-auto mt-8 bg-slate-200 py-4 px-2 rounded-md">
           <h1>
-            Phone number: <span>{rider?.phoneNumber || "N/A"}</span>
+            Phone number: <span>{rider?.phone || "N/A"}</span>
           </h1>
           <h1>
             Email ID: <span>{rider?.email || "N/A"}</span>

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { Button, Card, Space } from "antd";
-import { apiPath, socketServer } from "../../secret";
+import { apiAuthToken, apiPath, socketServer } from "../../secret";
 import { toast } from "alert";
 import { useAuth } from "../authContext/authProvider";
 import { message, Popconfirm } from "antd";
@@ -14,6 +14,9 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
         `${apiPath}/delivery/picked-up/${orderId}`,
         {
           method: "PUT",
+          headers: {
+            "x-auth-token": apiAuthToken,
+          },
         }
       );
       const result = await apiResponse.json();
@@ -34,7 +37,9 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
       const apiResponse = await fetch(
         `${apiPath}/delivery/drop-parcel/${orderId}`,
         {
-          method: "PUT",
+          method: "PUT",headers: {
+            "x-auth-token": apiAuthToken,
+          },
         }
       );
       const result = await apiResponse.json();
@@ -49,25 +54,6 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
       console.log(`there is an error: ${error}`);
     }
   }
-
-  //get localRider
-  const { localRider } = useAuth();
-
-  // useEffect(() => {
-  //   const socket = io(socketServer, {
-  //     auth: {
-  //       token: localRider?.token,
-  //     },
-  //   });
-
-  //   socket.emit("auth", localRider?.id);
-
-  //   //recieve current or from customer directly
-  //   socket.on("notifyParcelIsReadyForPickupFromServer", (data) => {
-  //     setInTransitOrder(data);
-  //     //location.reload();
-  //   });
-  // }, []);
 
   const confirm = (e) => {
     console.log(e);
@@ -167,19 +153,17 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
           </div> */}
 
           <div className="flex items-center justify-center gap-4 mt-4">
-            <div>
-              
-            </div>
+            <div></div>
 
             {inTransitOrder.status === "Ready for pickup" ? (
               <Popconfirm
-              title="Picked up parcel"
-              description="Are you sure to picked up this?"
-              onConfirm={() => handlePickupParcel(inTransitOrder._id)}
-              onCancel={cancel}
-            >
-              <Button>Pick up</Button>
-            </Popconfirm>
+                title="Picked up parcel"
+                description="Are you sure to picked up this?"
+                onConfirm={() => handlePickupParcel(inTransitOrder._id)}
+                onCancel={cancel}
+              >
+                <Button>Pick up</Button>
+              </Popconfirm>
             ) : inTransitOrder.status === "Picked up" ? (
               <Popconfirm
                 title="Picked up parcel"

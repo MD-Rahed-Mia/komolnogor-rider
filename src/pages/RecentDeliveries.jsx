@@ -4,6 +4,7 @@ import DeliveryCard from "../components/DeliveryCard";
 import useFetch from "../customHooks/useFetch";
 import Loading from "../components/Loading";
 import { useAuth } from "../authContext/authProvider";
+import { apiAuthToken } from "../../secret";
 
 export default function RecentDeliveries() {
   const { rider } = useAuth();
@@ -12,6 +13,7 @@ export default function RecentDeliveries() {
     method: "GET",
     headers: {
       "content-type": "application/josn",
+      "x-auth-token": apiAuthToken,
     },
   });
   return (

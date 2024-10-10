@@ -5,21 +5,32 @@ import { useAuth } from "../authContext/authProvider";
 
 import { Button, Modal } from "antd";
 import axios from "axios";
-import { apiPath } from "../../secret";
+import { apiAuthToken, apiPath } from "../../secret";
+import useFetch from "../customHooks/useFetch";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { rider } = useAuth();
 
-  console.log('Home');
+  console.log("Home");
 
   async function handleOk() {
     setIsModalOpen(false);
 
     try {
       axios
-        .put(`${apiPath}/rider/update-session/${rider.id}?session=Available`)
-        .then((res) => {});
+        .put(
+          `${apiPath}/rider/update-session/${rider.id}?session=Available`,
+          {},
+          {
+            headers: {
+              "x-auth-token": apiAuthToken,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+        });
     } catch (error) {
       throw new Error(error);
     }

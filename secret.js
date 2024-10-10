@@ -1,5 +1,4 @@
-const apiPath = import.meta.env.VITE_API_ENDPOINT;
+export const apiPath = import.meta.env.VITE_API_ENDPOINT;
 
 export const socketServer = import.meta.env.VITE_SOCKET_SERVER;
-
-export { apiPath };
+export const apiAuthToken = import.meta.env.VITE_API_AUTH_TOKEN;

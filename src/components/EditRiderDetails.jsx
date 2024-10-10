@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { FaFileUpload } from "react-icons/fa";
-import { apiPath } from "../../secret";
+import { apiAuthToken, apiPath } from "../../secret";
 import { useAuth } from "../authContext/authProvider";
 import { toast } from "alert";
 import Loading from "./Loading";
@@ -42,6 +42,9 @@ export default function EditRiderDetails() {
         `${apiPath}/rider/edit-rider-detail/${rider?.id}`,
         {
           method: "PUT",
+          headers: {
+            "x-auth-token": apiAuthToken,
+          },
           body: form,
         }
       );
@@ -86,8 +89,7 @@ export default function EditRiderDetails() {
         </div>
 
         <div className="mt-4">
-
-        <label htmlFor="name">name</label>
+          <label htmlFor="name">name</label>
           <input
             className="w-full px-2 py-2 rounded-md border-2 block"
             type="text"
@@ -101,8 +103,7 @@ export default function EditRiderDetails() {
           />
         </div>
         <div className="mt-4">
-
-        <label htmlFor="address">address</label>
+          <label htmlFor="address">address</label>
           <input
             className="w-full px-2 py-2 rounded-md border-2 block"
             type="text"

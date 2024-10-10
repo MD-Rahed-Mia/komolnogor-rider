@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import RiderLayout from "./layout/RiderLayout";
 import AcceptOrder from "../components/AcceptOrder";
 import Loading from "../components/Loading";
-import { apiPath } from "../../secret";
+import { apiAuthToken, apiPath } from "../../secret";
 import { useAuth } from "../authContext/authProvider";
 import InTransit from "../components/InTransitOrder";
 import { useSocket } from "../authContext/socketProvider";
@@ -21,10 +21,15 @@ export default function Waiting() {
           `${apiPath}/rider/current-order/${localRider?.id}`,
           {
             method: "GET",
+            headers: {
+              "x-auth-token": apiAuthToken,
+            },
           }
         );
-
         const result = await apiResponse.json();
+
+        console.log(result)
+
         if (result?.success) {
           setInTransitOrder(result?.order);
         } else {
@@ -42,19 +47,17 @@ export default function Waiting() {
     if (!socket || !localRider?.id) return;
     // Emit the authentication event
     socket.emit("auth", localRider.id);
-
   }, [socket, localRider]);
 
-
-    if(socket){
-      // Listener for new orders
+  if (socket) {
+    // Listener for new orders
     const handleNewOrder = (data) => {
       console.log("Received new order:", data);
       setCurrentOrder(data);
     };
 
     socket.on("riderRecievedNewOrder", handleNewOrder);
-    }
+  }
 
   return (
     <RiderLayout>

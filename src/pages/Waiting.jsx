@@ -10,8 +10,10 @@ import { useSocket } from "../authContext/socketProvider";
 export default function Waiting() {
   const [currentOrder, setCurrentOrder] = useState(null);
   const [inTransitOrder, setInTransitOrder] = useState(null);
-  const { localRider } = useAuth();
+  const { localRider, rider } = useAuth();
   const socket = useSocket();
+
+  let [timer, setTimer] = useState(15);
 
   // Fetch the current order for the rider
   useEffect(() => {
@@ -28,8 +30,6 @@ export default function Waiting() {
         );
         const result = await apiResponse.json();
 
-        console.log(result)
-
         if (result?.success) {
           setInTransitOrder(result?.order);
         } else {
@@ -42,27 +42,39 @@ export default function Waiting() {
     fetchRiderCurrentOrder();
   }, [localRider]);
 
-  // Authenticate with the socket and set up event listeners
-  useEffect(() => {
-    if (!socket || !localRider?.id) return;
-    // Emit the authentication event
-    socket.emit("auth", localRider.id);
-  }, [socket, localRider]);
+
 
   if (socket) {
     // Listener for new orders
     const handleNewOrder = (data) => {
       console.log("Received new order:", data);
       setCurrentOrder(data);
+      activeTimer();
     };
 
     socket.on("riderRecievedNewOrder", handleNewOrder);
   }
+  
+  function activeTimer() {
+    let intervalId = setInterval(() => {
+      timer--;
+      setTimer(timer);
+    }, 1000);
+  }
 
   return (
     <RiderLayout>
+      <div className="text-white w-fit px-12 py-2 rounded-sm bg-blue-500 mx-auto mt-12">
+        session: {rider.session}
+      </div>
+
       {currentOrder ? (
-        <AcceptOrder currentOrder={currentOrder} />
+        <AcceptOrder
+          currentOrder={currentOrder}
+          timer={timer}
+          setTimer={setTimer}
+          setCurrentOrder={setCurrentOrder}
+        />
       ) : inTransitOrder ? (
         <InTransit
           inTransitOrder={inTransitOrder}

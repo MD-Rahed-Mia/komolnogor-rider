@@ -11,12 +11,39 @@ import ChangePassword from "./pages/ChangePassword";
 import RecentDeliveries from "./pages/RecentDeliveries";
 import Register from "./pages/Register";
 import Wallet from "./pages/Wallet";
-import { SocketProvider } from "./authContext/socketProvider";
+import { SocketProvider, useSocket } from "./authContext/socketProvider";
+import AcceptOrder from "./components/AcceptOrder";
+import { useEffect, useState } from "react";
 
 function App() {
+  const socket = useSocket();
+  const { localRider } = useAuth();
+
+  const [acceptOrderData, setAcceptOrderData] = useState(null);
+
+  useEffect(() => {
+    if (!socket || !localRider) return;
+    console.log(localRider);
+
+    socket.emit("auth", localRider?.id);
+  }, [socket]);
+
+  if (socket) {
+    async function handleNewOrder(data) {
+      setAcceptOrderData(data);
+    }
+    socket.on("riderRecievedNewOrder", handleNewOrder);
+  }
+
   return (
     <>
       <Toaster position="top-right" />
+      {acceptOrderData && (
+        <AcceptOrder
+          currentOrder={acceptOrderData}
+          setAcceptOrderData={setAcceptOrderData}
+        />
+      )}
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -36,6 +63,7 @@ function App() {
               </PrivateRoute>
             }
           />
+
           <Route
             path="/profile"
             element={

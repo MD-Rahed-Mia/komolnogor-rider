@@ -5,6 +5,7 @@ import { apiAuthToken, apiPath, socketServer } from "../../secret";
 import { toast } from "alert";
 import { useAuth } from "../authContext/authProvider";
 import { message, Popconfirm } from "antd";
+import TrackOrder from "./TrackOrder";
 
 export default function InTransit({ inTransitOrder, setInTransitOrder }) {
   //handle pickup parcel
@@ -37,7 +38,8 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
       const apiResponse = await fetch(
         `${apiPath}/delivery/drop-parcel/${orderId}`,
         {
-          method: "PUT",headers: {
+          method: "PUT",
+          headers: {
             "x-auth-token": apiAuthToken,
           },
         }
@@ -65,7 +67,7 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
   };
 
   return (
-    <div className="w-full items-center justify-center flex h-[80vh]">
+    <div className="w-full items-center justify-center flex min-h-[80vh] flex-col overflow-y-scroll">
       <Space direction="vertical" size={16}>
         <Card
           title="You have new order"
@@ -86,13 +88,6 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
               {inTransitOrder.restaurantId}
             </span>
           </p>
-
-          {/* <p className=" mt-2 font-bold">
-            Status:{" "}
-            <span >
-              {inTransitOrder.status}
-            </span>
-          </p> */}
 
           <p className="font-bold">
             Status:{" "}
@@ -177,6 +172,10 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
           </div>
         </Card>
       </Space>
+
+      <div>
+        <TrackOrder />
+      </div>
     </div>
   );
 }

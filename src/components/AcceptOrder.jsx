@@ -1,34 +1,80 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Space } from "antd";
 import axios from "axios";
-import { apiPath } from "../../secret";
+import { apiAuthToken, apiPath } from "../../secret";
 import { useAuth } from "../authContext/authProvider";
 import { toast } from "alert";
-import { useNavigate } from "react-router-dom";
 
-export default function AcceptOrder({
-  currentOrder,
-}) {
+//
+export default function AcceptOrder({ currentOrder, setAcceptOrderData }) {
   const { localRider } = useAuth();
 
-  const Navigate = useNavigate();
+  // useEffect(() => {
+  //   async function reAssignRider() {
+  //     const apiResponse = await fetch(
+  //       `${apiPath}/rider/re-assign-new-rider?orderId=${currentOrder._id}&riderId=${localRider.id}`,
+  //       {
+  //         method: "PUT",
+  //         headers: {
+  //           "x-auth-token": apiAuthToken,
+  //         },
+  //       }
+  //     );
+  //     const result = await apiResponse.json();
+  //   }
+  // });
 
   async function handleAccepOrder(orderId) {
     try {
-      axios
-        .put(`${apiPath}/rider//assign-rider/${orderId}/${localRider?.id}`)
-        .then((res) => {
-          console.log("rider assign successful.");
-          toast("You have accept an order.");
-          location.reload();
-        });
+      const apiResponse = await fetch(
+        `${apiPath}/rider/assign-rider?orderId=${orderId}&riderId=${localRider.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "x-auth-token": apiAuthToken,
+          },
+        }
+      );
+      const result = await apiResponse.json();
+
+      if (result) {
+        toast("order accepted.");
+        setAcceptOrderData(null);
+      }
     } catch (error) {
       console.log("there is an error: ", error);
     }
   }
 
+  // handle reject order
+  async function handleRejectOrder() {
+    console.log(localRider);
+    try {
+      const apiResponse = await fetch(
+        `${apiPath}/rider/re-assign-new-rider?orderId=${currentOrder._id}&riderId=${localRider.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "x-auth-token": apiAuthToken,
+          },
+        }
+      );
+      const result = await apiResponse.json();
+
+      if (result) {
+        toast(result?.message);
+        setAcceptOrderData(null);
+      }
+    } catch (error) {
+      console.log(error);
+      toast("failed to reject order.");
+    }
+  }
+
   return (
-    <div className="w-full items-center justify-center flex h-[80vh]">
+    <div className="w-full items-center justify-center flex h-[80vh] fixed top-0 left-0 bg-white z-50">
+      <div className="px-8 py-2 bg-blue-500 text-white rounded-sm text-3xl absolute top-20 right-8"></div>
+
       <Space direction="vertical" size={16}>
         <Card
           title="You have new order"
@@ -64,15 +110,17 @@ export default function AcceptOrder({
           </p>
           <div>
             <table className="w-full">
-              <tr>
-                <th className="border px-2 py-1 text-center">Items Name</th>
-                <th className="border px-2 py-1 text-center">Quanity</th>
-                <th className="border px-2 py-1 text-center">Price</th>
-              </tr>
+              <thead>
+                <tr>
+                  <th className="border px-2 py-1 text-center">Items Name</th>
+                  <th className="border px-2 py-1 text-center">Quanity</th>
+                  <th className="border px-2 py-1 text-center">Price</th>
+                </tr>
+              </thead>
               <tbody>
                 {currentOrder.items.map((item, index) => {
                   return (
-                    <tr>
+                    <tr key={index}>
                       <td className="border px-2 py-1 text-center">
                         {item.name}
                       </td>
@@ -105,7 +153,12 @@ export default function AcceptOrder({
             >
               Accept
             </Button>
-            <Button className="text-white bg-red-400">Decline</Button>
+            <Button
+              className="text-white bg-red-400"
+              onClick={handleRejectOrder}
+            >
+              Reject
+            </Button>
           </div>
         </Card>
       </Space>

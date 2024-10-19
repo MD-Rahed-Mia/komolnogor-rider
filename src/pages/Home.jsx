@@ -6,14 +6,21 @@ import { useAuth } from "../authContext/authProvider";
 import { Button, Modal } from "antd";
 import axios from "axios";
 import { apiAuthToken, apiPath } from "../../secret";
-import useFetch from "../customHooks/useFetch";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { rider } = useAuth();
+  const [sessionBtn, setSessionBtn] = useState(null);
 
-  console.log("Home");
-
+  useEffect(() => {
+    if (
+      rider?.session === "Available" ||
+      rider?.session === "Out For Delivery"
+    ) { 
+      setSessionBtn(true);
+    }
+  }, [rider]);
+  
   async function handleOk() {
     setIsModalOpen(false);
 
@@ -61,6 +68,7 @@ export default function Home() {
             <Button
               type="primary"
               className="mx-auto block"
+              disabled={sessionBtn}
               onClick={handleStartSession}
             >
               Start Session

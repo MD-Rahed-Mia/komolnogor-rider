@@ -7,6 +7,7 @@ import {
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const items = [
   {
@@ -50,6 +51,7 @@ export default function MenuContainer({ setIsMenu, isMenu }) {
     console.log(e.key);
     if (e.key == 10) {
       localStorage.removeItem("rider");
+      Cookies.remove("token");
       navigate("/login");
     } else if (e.key == 5) {
       navigate("/profile");
@@ -57,7 +59,7 @@ export default function MenuContainer({ setIsMenu, isMenu }) {
       navigate("/recent-deliveries");
     } else if (e.key == 7) {
       navigate("/change-password");
-    }else if (e.key == 9) {
+    } else if (e.key == 9) {
       navigate("/wallet");
     }
     setIsMenu(!isMenu);

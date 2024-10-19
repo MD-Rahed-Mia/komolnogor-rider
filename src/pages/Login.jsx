@@ -3,6 +3,7 @@ import { Button, Form, Input, Spin } from "antd";
 import { apiAuthToken, apiPath } from "../../secret";
 import { useNavigate } from "react-router-dom";
 import { toast } from "alert";
+import Cookies from "js-cookie";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -30,6 +31,13 @@ export default function Login() {
 
       if (result?.success) {
         localStorage.setItem("rider", JSON.stringify(result?.rider));
+
+        console.log(result?.rider.token);
+        Cookies.set("token", result?.rider.id, {
+          secure: true,
+          sameSite: "Lax",
+        });
+
         navigate("/");
       } else {
         toast(result?.message || "Login failed.");

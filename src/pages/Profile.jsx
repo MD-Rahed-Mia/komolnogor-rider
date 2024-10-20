@@ -9,11 +9,13 @@ export default function Profile() {
   const { rider } = useAuth();
 
   useEffect(() => {
+
+
     if (rider?.profileImage) {
-      // Convert binary image data to Base64 string for rendering
+     
       setProfileImage(rider?.profileImage);
     } else {
-      // Set a default image if no profile image is available
+      
       setProfileImage("images/profile.png");
     }
   }, [rider]);
@@ -21,7 +23,7 @@ export default function Profile() {
   return (
     <RiderLayout>
       <div className="w-full h-[80vh] overflow-y-scroll overflow-x-hidden">
-        <div className="w-32 h-32 rounded-full border-2 mx-auto mt-8 object-cover relative">
+        <div className="w-24 h-24 rounded-full border-2 mx-auto mt-8 object-cover relative">
           <img
             src={profileImage}
             alt="profile"
@@ -37,7 +39,22 @@ export default function Profile() {
           </h2>
         </div>
 
-        <div className="w-4/5 mx-auto mt-8 bg-slate-200 py-4 px-2 rounded-md">
+        <div>
+          <div className="w-4/5 mx-auto ">
+            <label htmlFor="" className="text-sm">Email</label>
+            <div className="my-1 w-full px-4 text-sm py-1 bg-slate-100 rounded-md">{rider?.email}</div>
+          </div>
+          <div className="w-4/5 mt-3 mx-auto ">
+            <label htmlFor="" className="text-sm">Phone Number</label>
+            <div className="my-1 w-full px-4 text-sm py-1 bg-slate-100 rounded-md">+88 {rider?.phone}</div>
+          </div>
+          <div className="w-4/5 mt-3 mx-auto ">
+            <label htmlFor="" className="text-sm">Address</label>
+            <div className="my-1 w-full px-4 text-sm py-1 bg-slate-100 rounded-md">{rider?.address}</div>
+          </div>
+        </div>
+
+        {/* <div className="w-4/5 mx-auto mt-8 bg-slate-200 py-4 px-2 rounded-md">
           <h1>
             Phone number: <span>{rider?.phone || "N/A"}</span>
           </h1>
@@ -47,8 +64,7 @@ export default function Profile() {
           <h1>
             Address: <span>{rider?.address || "N/A"}</span>
           </h1>
-        </div>
-
+        </div> */}
         <div>
           <button
             className="text-center w-4/5 px-4 py-2 rounded-md text-white bg-blue-800 block mx-auto mt-8"
@@ -57,7 +73,6 @@ export default function Profile() {
             {editProfile ? "Cancel" : "Edit"}
           </button>
         </div>
-
         {editProfile && <EditRiderDetails />}
       </div>
     </RiderLayout>

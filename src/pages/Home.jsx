@@ -16,11 +16,11 @@ export default function Home() {
     if (
       rider?.session === "Available" ||
       rider?.session === "Out For Delivery"
-    ) { 
+    ) {
       setSessionBtn(true);
     }
   }, [rider]);
-  
+
   async function handleOk() {
     setIsModalOpen(false);
 
@@ -54,9 +54,13 @@ export default function Home() {
     <PrivateRoute>
       <RiderLayout>
         <div className="w-full">
-          <h1 className="text-3xl font-extrabold text-center my-32">
-            Are you ready for delivery?
-          </h1>
+          <div>
+            <img
+              src="/images/delivery_man.png"
+              className="w-2/5 mx-auto block mt-5"
+              alt="delivery man"
+            />
+          </div>
 
           <div>
             <div className="mx-auto text-center my-4">
@@ -81,6 +85,17 @@ export default function Home() {
             >
               <p>Are you sure to start your session?</p>
             </Modal>
+          </div>
+
+          <div>
+            <div className="w-[300px] mx-auto mt-12 h-[380px]">
+              <div id="google-maps-display" className="w-[300px] mx-auto mt-12 h-[380px]">
+                <iframe
+                aria-controls="true"
+                  src="https://www.google.com/maps/embed/v1/place?q=chattogram&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"
+                ></iframe>
+              </div>
+            </div>
           </div>
         </div>
       </RiderLayout>

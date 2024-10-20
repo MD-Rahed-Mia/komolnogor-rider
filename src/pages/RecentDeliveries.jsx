@@ -26,9 +26,10 @@ export default function RecentDeliveries() {
         {loading ? (
           <Loading />
         ) : data?.orderList.length == 0 ? (
-          <h1 className="mt-8 font-bold text-center text-3xl w-3/5 mx-auto">
-            Currently no order found.
-          </h1>
+          <div className="mt-8 font-bold text-center w-3/5 mx-auto">
+            <img src="/images/no_order.png" alt="no order" className="w-20 h-20 object-cover mx-auto mt-3"/>
+            <h3>Sorry. No order found.</h3>
+          </div>
         ) : (
           data?.orderList.map((order, index) => {
             return <DeliveryCard order={order} key={index} />;

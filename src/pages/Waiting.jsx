@@ -6,12 +6,15 @@ import { apiAuthToken, apiPath } from "../../secret";
 import { useAuth } from "../authContext/authProvider";
 import InTransit from "../components/InTransitOrder";
 import { useSocket } from "../authContext/socketProvider";
+import ActiveStatus from "../components/home/ActiveStatus";
+import AxiosIntances from "../utils/AxiosInstances";
+import { toast } from "alert";
 
 export default function Waiting() {
   const [currentOrder, setCurrentOrder] = useState(null);
   const [inTransitOrder, setInTransitOrder] = useState(null);
-  const { localRider, rider } = useAuth();
-  const socket = useSocket();
+  const { id, rider } = useAuth();
+  const { socket } = useSocket();
 
   let [timer, setTimer] = useState(15);
 
@@ -19,30 +22,43 @@ export default function Waiting() {
   useEffect(() => {
     async function fetchRiderCurrentOrder() {
       try {
-        const apiResponse = await fetch(
-          `${apiPath}/rider/current-order/${localRider?.id}`,
-          {
-            method: "GET",
-            headers: {
-              "x-auth-token": apiAuthToken,
-            },
-          }
+        const response = await AxiosIntances.get(
+          `${apiPath}/rider/current-order/${id}`
         );
-        const result = await apiResponse.json();
 
-        if (result?.success) {
-          setInTransitOrder(result?.order);
-        } else {
-          setInTransitOrder(null);
+        console.log(await response.data);
+
+        const data = await response.data;
+
+        if (data.success) {
+          setInTransitOrder(data.order);
         }
+
+        // const apiResponse = await fetch(
+        //   `${apiPath}/rider/current-order/${localRider?.id}`,
+        //   {
+        //     method: "GET",
+        //     headers: {
+        //       "x-auth-token": apiAuthToken,
+        //     },
+        //   }
+        // );
+        // const result = await apiResponse.json();
+
+        // if (result?.success) {
+        //   setInTransitOrder(result?.order);
+        // } else {
+        //   setInTransitOrder(null);
+        // }
       } catch (error) {
-        console.error("Error fetching current order:", error);
+        console.log(error);
+        if (error.response) {
+          toast.success(error.response.data.result);
+        }
       }
     }
     fetchRiderCurrentOrder();
-  }, [localRider]);
-
-
+  }, [id]);
 
   if (socket) {
     // Listener for new orders
@@ -54,7 +70,7 @@ export default function Waiting() {
 
     socket.on("riderRecievedNewOrder", handleNewOrder);
   }
-  
+
   function activeTimer() {
     let intervalId = setInterval(() => {
       timer--;
@@ -64,9 +80,7 @@ export default function Waiting() {
 
   return (
     <RiderLayout>
-      <div className="text-white w-fit px-12 py-2 rounded-sm bg-blue-500 mx-auto mt-12">
-        session: {rider.session}
-      </div>
+      <ActiveStatus />
 
       {currentOrder ? (
         <AcceptOrder

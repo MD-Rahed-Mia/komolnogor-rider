@@ -6,29 +6,32 @@ import { toast } from "alert";
 import { useAuth } from "../authContext/authProvider";
 import { message, Popconfirm } from "antd";
 import TrackOrder from "./TrackOrder";
+import AxiosIntances from "../utils/AxiosInstances";
 
 export default function InTransit({ inTransitOrder, setInTransitOrder }) {
   //handle pickup parcel
   async function handlePickupParcel(orderId) {
     try {
-      const apiResponse = await fetch(
-        `${apiPath}/delivery/picked-up/${orderId}`,
-        {
-          method: "PUT",
-          headers: {
-            "x-auth-token": apiAuthToken,
-          },
-        }
+      const response = await AxiosIntances.put(
+        `/delivery/picked-up?order-id=${orderId}`
       );
-      const result = await apiResponse.json();
-      if (result?.success) {
-        toast("Parcel Pickup Successful.");
-        setInTransitOrder(result?.order);
+
+      console.log(await response.data);
+
+      const data = await response.data;
+
+      if (data.success) {
+        toast.success(data.message);
       } else {
-        toast("Failed to picked up parcel. Please try again.");
+        toast.error(data.message);
       }
     } catch (error) {
-      console.log(`there is an error: ${error}`);
+      // console.log(`there is an error: ${error}`);
+      console.log(error.response);
+      if (error.response) {
+        const data = await error.response.data;
+        toast.error(data.message);
+      }
     }
   }
 
@@ -128,7 +131,7 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
                         {item.quantity}
                       </td>
                       <td className="border px-2 py-1 text-center">
-                        {item.price}
+                        {item.offerPrice}
                       </td>
                     </tr>
                   );
@@ -150,7 +153,7 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
           <div className="flex items-center justify-center gap-4 mt-4">
             <div></div>
 
-            {inTransitOrder.status === "Ready for pickup" ? (
+            {inTransitOrder.status === "ready for pickup" ? (
               <Popconfirm
                 title="Picked up parcel"
                 description="Are you sure to picked up this?"
@@ -159,7 +162,7 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
               >
                 <Button>Pick up</Button>
               </Popconfirm>
-            ) : inTransitOrder.status === "Picked up" ? (
+            ) : inTransitOrder.status === "picked up" ? (
               <Popconfirm
                 title="Picked up parcel"
                 description="Are you sure to picked up this?"

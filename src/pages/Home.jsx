@@ -6,6 +6,7 @@ import { useAuth } from "../authContext/authProvider";
 import { Button, Modal } from "antd";
 import axios from "axios";
 import { apiAuthToken, apiPath } from "../../secret";
+import ActiveStatus from "../components/home/ActiveStatus";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,8 +15,8 @@ export default function Home() {
 
   useEffect(() => {
     if (
-      rider?.session === "Available" ||
-      rider?.session === "Out For Delivery"
+      rider?.session === "available" ||
+      rider?.session === "out for delivery"
     ) {
       setSessionBtn(true);
     }
@@ -55,6 +56,10 @@ export default function Home() {
       <RiderLayout>
         <div className="w-full">
           <div>
+            <ActiveStatus />
+          </div>
+
+          <div>
             <img
               src="/images/delivery_man.png"
               className="w-2/5 mx-auto block mt-5"
@@ -63,35 +68,13 @@ export default function Home() {
           </div>
 
           <div>
-            <div className="mx-auto text-center my-4">
-              session:{" "}
-              <span className="px-4 py-1 text-white bg-blue-500 rounded-md">
-                {rider?.session}
-              </span>
-            </div>
-            <Button
-              type="primary"
-              className="mx-auto block"
-              disabled={sessionBtn}
-              onClick={handleStartSession}
-            >
-              Start Session
-            </Button>
-            <Modal
-              title="Start session"
-              open={isModalOpen}
-              onOk={handleOk}
-              onCancel={handleCancel}
-            >
-              <p>Are you sure to start your session?</p>
-            </Modal>
-          </div>
-
-          <div>
             <div className="w-[300px] mx-auto mt-12 h-[380px]">
-              <div id="google-maps-display" className="w-[300px] mx-auto mt-12 h-[380px]">
+              <div
+                id="google-maps-display"
+                className="w-[300px] mx-auto mt-12 h-[380px]"
+              >
                 <iframe
-                aria-controls="true"
+                  aria-controls="true"
                   src="https://www.google.com/maps/embed/v1/place?q=chattogram&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"
                 ></iframe>
               </div>

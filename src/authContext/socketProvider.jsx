@@ -7,14 +7,17 @@ export const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
-  const { rider } = useAuth();
+  const [isActive, setIsActive] = useState(false);
+  const { id, rider } = useAuth();
+
+  // console.log(rider)
 
   useEffect(() => {
-    if (!rider?.token) return; // Only connect if the token is available
-
+    if (!id) return; // Only connect if the token is available
+    console.log(id);
     const newSocket = io(socketServer, {
       auth: {
-        token: rider.token,
+        token: id,
       },
     });
 
@@ -26,12 +29,24 @@ export const SocketProvider = ({ children }) => {
       console.error("Connection error:", err.message);
     });
 
-    setSocket(newSocket);
+    newSocket.emit("auth", id);
 
+    newSocket.on("connectionStatus", (data) => {
+      console.log(data.status);
+      if (data.status === "connected") {
+        setIsActive(true);
+      } else {
+        setIsActive(false);
+      }
+    });
+
+    setSocket(newSocket);
   }, [rider]); // Re-run effect when rider changes
 
   return (
-    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+    <SocketContext.Provider value={{ socket, isActive }}>
+      {children}
+    </SocketContext.Provider>
   );
 };
 

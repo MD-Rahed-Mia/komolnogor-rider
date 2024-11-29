@@ -4,6 +4,7 @@ import { apiAuthToken, apiPath } from "../../secret";
 import { useNavigate } from "react-router-dom";
 import { toast } from "alert";
 import Cookies from "js-cookie";
+import AxiosIntances from "../utils/AxiosInstances";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -12,39 +13,37 @@ export default function Login() {
   async function onFinish(values) {
     setLoading(true);
     try {
-      const apiResponse = await fetch(`${apiPath}/rider/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": apiAuthToken,
-        },
-        body: JSON.stringify({
-          email: values.email.trim(),
-          password: values.password.trim(),
-        }),
-        credentials: "include",
-      });
+      const form = {
+        email: values.email.trim(),
+        password: values.password.trim(),
+      };
 
-      const result = await apiResponse.json();
+      const response = await AxiosIntances.post(`/rider/login`, form);
 
-      console.log(result);
+      console.log(await response.data);
 
-      if (result?.success) {
-        localStorage.setItem("rider", JSON.stringify(result?.rider));
+      const data = await response.data;
 
-        console.log(result?.rider.token);
-        Cookies.set("token", result?.rider.id, {
-          secure: true,
-          sameSite: "Lax",
-        });
-
+      if (data.success) {
+        toast.success("Login successful");
         navigate("/");
-      } else {
-        toast(result?.message || "Login failed.");
+        Cookies.set("token", data.rider.id);
       }
+
+      // if (result?.success) {
+      //   localStorage.setItem("rider", JSON.stringify(result?.rider));
+      //   console.log(result?.rider.token);
+      //   Cookies.set("token", result?.rider.id, {
+      //     secure: true,
+      //     sameSite: "Lax",
+      //   });
+      //   navigate("/");
+      // } else {
+      //   toast(result?.message || "Login failed.");
+      // }
     } catch (error) {
-      console.error(`Error during login: ${error}`);
-      toast("An error occurred. Please try again.");
+      console.log(error.response);
+      console.log(error);
     } finally {
       setLoading(false);
     }

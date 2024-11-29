@@ -16,16 +16,16 @@ import AcceptOrder from "./components/AcceptOrder";
 import { useEffect, useState } from "react";
 
 function App() {
-  const socket = useSocket();
-  const { localRider } = useAuth();
+  const { socket } = useSocket();
+  const { id } = useAuth();
 
   const [acceptOrderData, setAcceptOrderData] = useState(null);
 
   useEffect(() => {
-    if (!socket || !localRider) return;
-    console.log(localRider);
+    if (!socket || !id) return;
+    console.log(id);
 
-    socket.emit("auth", localRider?.id);
+    socket.emit("auth", id);
   }, [socket]);
 
   if (socket) {

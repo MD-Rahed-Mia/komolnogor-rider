@@ -2,20 +2,27 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { apiAuthToken, apiPath } from "../../secret";
 import useFetch from "../customHooks/useFetch";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const UserContext = createContext();
 
-const localRider = JSON.parse(localStorage.getItem("rider"));
-
 const AuthProvider = ({ children }) => {
-  const [rider, setRider] = useState(localRider);
-  
+  const [rider, setRider] = useState(null);
+ // const navigate = useNavigate();
+
+ const id = Cookies.get("token");
   useEffect(() => {
     async function getRiderProfile() {
-      if (!localRider) return;
+
+      if (!id || id === undefined) {
+      //  navigate("/login");
+        return;
+      }
+
       try {
         axios
-          .get(`${apiPath}/rider/profile/${localRider?.id}`, {
+          .get(`${apiPath}/rider/profile/${id}`, {
             headers: {
               "x-auth-token": apiAuthToken,
             },
@@ -31,7 +38,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ localRider, rider }}>
+    <UserContext.Provider value={{ id, rider }}>
       {children}
     </UserContext.Provider>
   );

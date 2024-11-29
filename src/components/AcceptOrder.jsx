@@ -6,7 +6,7 @@ import { toast } from "alert";
 import { useNavigate } from "react-router-dom";
 
 export default function AcceptOrder({ currentOrder, setAcceptOrderData }) {
-  const { localRider } = useAuth();
+  const { id } = useAuth();
   const [timer, setTimer] = useState(30);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function AcceptOrder({ currentOrder, setAcceptOrderData }) {
   async function handleAcceptOrder(orderId) {
     try {
       const apiResponse = await fetch(
-        `${apiPath}/rider/assign-rider?orderId=${orderId}&riderId=${localRider.id}`,
+        `${apiPath}/rider/assign-rider?orderId=${orderId}&riderId=${id}`,
         {
           method: "PUT",
           headers: {
@@ -64,7 +64,7 @@ export default function AcceptOrder({ currentOrder, setAcceptOrderData }) {
   async function handleRejectOrder() {
     try {
       const apiResponse = await fetch(
-        `${apiPath}/rider/re-assign-new-rider?orderId=${currentOrder._id}&riderId=${localRider.id}`,
+        `${apiPath}/rider/re-assign-new-rider?orderId=${currentOrder._id}&riderId=${id}`,
         {
           method: "PUT",
           headers: {
@@ -88,7 +88,7 @@ export default function AcceptOrder({ currentOrder, setAcceptOrderData }) {
     async function reAssignRiderNow() {
       try {
         const apiResponse = await fetch(
-          `${apiPath}/rider/re-assign-new-rider?orderId=${currentOrder._id}&riderId=${localRider.id}`,
+          `${apiPath}/rider/re-assign-new-rider?orderId=${currentOrder._id}&riderId=${id}`,
           {
             method: "PUT",
             headers: {

@@ -5,21 +5,22 @@ import { CiDeliveryTruck } from "react-icons/ci";
 import { TbTruckDelivery } from "react-icons/tb";
 import { Link, NavLink } from "react-router-dom";
 import MenuContainer from "./Menu";
+import { IoMdNotifications } from "react-icons/io";
 
 export default function RiderNavigation() {
   const [isMenu, setIsMenu] = useState(false);
 
   return (
     <div>
-      <div className="absolute bottom-0 left-0 min-h-[60px] bg-gray-300 w-full grid grid-cols-4 place-content-center justify-items-center">
+      <div className="fixed bg-white bottom-0 left-0 min-h-[60px] shadow-lg border w-full grid grid-cols-5 place-content-center justify-items-center">
         <NavLink
           to={"/"}
           style={({ isActive }) => {
             return {
-              backgroundColor: isActive ? "#1677ff" : "gray",
+              color: isActive ? "#1677ff" : "#89A8B2",
             };
           }}
-          className="text-xl cursor-pointer text-white w-10 h-10 rounded-full bg-white flex items-center justify-center"
+          className="text-xl cursor-pointer text-[#89A8B2] w-10 h-10  flex items-center justify-center"
         >
           <CiHome />
         </NavLink>
@@ -27,10 +28,10 @@ export default function RiderNavigation() {
           to={"/rider/order-waiting"}
           style={({ isActive }) => {
             return {
-              backgroundColor: isActive ? "#1677ff" : "gray",
+              color: isActive ? "#1677ff" : "#89A8B2",
             };
           }}
-          className="text-xl cursor-pointer text-white w-10 h-10 rounded-full bg-white flex items-center justify-center"
+          className="text-xl cursor-pointer text-[#89A8B2] w-10 h-10  flex items-center justify-center"
         >
           <CiDeliveryTruck />
         </NavLink>
@@ -38,21 +39,34 @@ export default function RiderNavigation() {
           to={"/recent-deliveries"}
           style={({ isActive }) => {
             return {
-              backgroundColor: isActive ? "#1677ff" : "gray",
+              color: isActive ? "#1677ff" : "#89A8B2",
             };
           }}
-          className="text-xl cursor-pointer text-white w-10 h-10 rounded-full bg-white flex items-center justify-center"
+          className="text-xl cursor-pointer text-[#89A8B2] w-10 h-10   flex items-center justify-center"
         >
           <TbTruckDelivery />
         </NavLink>
+
+        <NavLink
+        to={"/notification"}
+          style={({ isActive }) => {
+            return {
+              color: isActive ? "#1677ff" : "#89A8B2",
+            };
+          }}
+          className="text-xl cursor-pointer text-[#89A8B2] w-10 h-10  flex items-center justify-center"
+        >
+          <IoMdNotifications />
+        </NavLink>
+
         <NavLink
           onClick={() => setIsMenu(!isMenu)}
           style={({ isActive }) => {
             return {
-              backgroundColor: isMenu ? "#1677ff" : "gray",
+              color: isActive ? "#1677ff" : "#89A8B2",
             };
           }}
-          className="text-xl cursor-pointer text-white w-10 h-10 rounded-full bg-white flex items-center justify-center"
+          className="text-xl cursor-pointer text-[#89A8B2] w-10 h-10  flex items-center justify-center"
         >
           <FaRegUser />
         </NavLink>

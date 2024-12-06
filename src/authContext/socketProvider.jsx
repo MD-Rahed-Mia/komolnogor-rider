@@ -10,7 +10,7 @@ export const SocketProvider = ({ children }) => {
   const [isActive, setIsActive] = useState(false);
   const { id, rider } = useAuth();
 
-  // console.log(rider) 
+  // console.log(rider)
 
   useEffect(() => {
     if (!id) return; // Only connect if the token is available

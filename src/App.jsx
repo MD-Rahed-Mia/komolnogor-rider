@@ -23,7 +23,7 @@ function App() {
 
   useEffect(() => {
     if (!socket || !id) return;
-    console.log(id);
+    console.log("socket id : ", socket.id);
 
     socket.emit("auth", id);
   }, [socket]);

@@ -14,6 +14,7 @@ import Wallet from "./pages/Wallet";
 import { SocketProvider, useSocket } from "./authContext/socketProvider";
 import AcceptOrder from "./components/AcceptOrder";
 import { useEffect, useState } from "react";
+import LiveChat from "./components/Livechat";
 
 function App() {
   const { socket } = useSocket();
@@ -60,6 +61,15 @@ function App() {
             element={
               <PrivateRoute>
                 <Waiting />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/live-chat/:orderId/:userId"
+            element={
+              <PrivateRoute>
+                <LiveChat />
               </PrivateRoute>
             }
           />

@@ -7,13 +7,15 @@ import { useAuth } from "../authContext/authProvider";
 import { message, Popconfirm } from "antd";
 import TrackOrder from "./TrackOrder";
 import AxiosIntances from "../utils/AxiosInstances";
+import { Link } from "react-router-dom";
+import { BsFillChatLeftTextFill } from "react-icons/bs";
 
 export default function InTransit({ inTransitOrder, setInTransitOrder }) {
   //handle pickup parcel
   async function handlePickupParcel(orderId) {
     try {
       const response = await AxiosIntances.put(
-        `/delivery/picked-up?order-id=${orderId}`
+        `/delivery/picked-up?order-id=${orderId}`,
       );
 
       console.log(await response.data);
@@ -45,7 +47,7 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
           headers: {
             "x-auth-token": apiAuthToken,
           },
-        }
+        },
       );
       const result = await apiResponse.json();
 
@@ -76,9 +78,17 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
           title="You have new order"
           style={{
             width: "95%",
-            margin: "0 auto",
+            margin: "40px auto",
           }}
+          className="border px-2 shadow-lg relative rounded-lg my-12"
         >
+          <Link
+            to={`/live-chat/${inTransitOrder._id}/${inTransitOrder.userId}`}
+            className="absolute top-3 right-3 flex items-center justify-center gap-2"
+          >
+            <BsFillChatLeftTextFill /> chat
+          </Link>
+
           <p className=" mt-2 font-bold">
             Order ID:{" "}
             <span className="font-bold text-blue-500 uppercase">

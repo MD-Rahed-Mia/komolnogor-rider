@@ -8,7 +8,7 @@ import Loading from "../components/Loading";
 export default function Wallet() {
   const [wallet, setWallet] = useState(null);
   const { rider } = useAuth();
-  const { loading, data } = useFetch(`/wallet/rider-wallet/${rider.id}`);
+  const { loading, data } = useFetch(`/wallet/rider-wallet/${rider?.id}`);
 
   useEffect(() => {
     setWallet(data?.result);

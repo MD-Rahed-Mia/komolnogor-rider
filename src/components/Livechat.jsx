@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import Item from "antd/es/list/Item";
 import { apiAuthToken, apiPath } from "../../secret";
 import { useSocket } from "../authContext/socketProvider";
+import { DateTime } from "luxon";                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 
 const LiveChat = () => {
   const [messages, setMessages] = useState([]);
@@ -32,6 +33,7 @@ const LiveChat = () => {
         message: input,
         sender: "rider",
         orderId: orderId,
+        createAt: new Date().toISOString(),
       };
       socket.emit("sendMessageToRider", JSON.stringify(message));
       setMessages((prev) => [...prev, message]);
@@ -65,7 +67,7 @@ const LiveChat = () => {
             headers: {
               "x-auth-token": apiAuthToken,
             },
-          },
+          }
         );
 
         console.log(data);
@@ -145,7 +147,11 @@ const LiveChat = () => {
                   : "bg-gray-300 text-gray-800"
               }`}
             >
-              {msg.message}
+              {msg.message}<span className="text-[11px] block text-right">
+                {DateTime.fromISO(msg.createAt, "hh:mm:ss a")
+                  .setZone("Asia/Dhaka")
+                  .toFormat("hh:mm:ss a")}
+              </span>
             </div>
           ))}
         </div>

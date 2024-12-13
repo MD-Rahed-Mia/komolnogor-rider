@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { apiPath } from "../../secret";
+import { apiAuthToken, apiPath } from "../../secret";
 
 export default function useFetch(url, options) {
   const [data, setData] = useState(null);
@@ -9,7 +9,12 @@ export default function useFetch(url, options) {
     async function fetchFromApi() {
       setLoading(true);
       try {
-        const apiResponse = await fetch(`${apiPath}${url}`, options);
+        const apiResponse = await fetch(`${apiPath}${url}`, {
+          headers: {
+            ...options,
+            "x-auth-token": apiAuthToken,
+          },
+        });
 
         if (!apiResponse.ok) {
           throw new Error("Network response was not ok");

@@ -9,8 +9,11 @@ import TrackOrder from "./TrackOrder";
 import AxiosIntances from "../utils/AxiosInstances";
 import { Link } from "react-router-dom";
 import { BsFillChatLeftTextFill } from "react-icons/bs";
+import { useSocket } from "../authContext/socketProvider";
 
 export default function InTransit({ inTransitOrder, setInTransitOrder }) {
+  const { socket } = useSocket();
+
   //handle pickup parcel
   async function handlePickupParcel(orderId) {
     try {
@@ -24,6 +27,8 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
 
       if (data.success) {
         toast.success(data.message);
+
+        socket.on("parcelPickUpByRider", data.order);
       } else {
         toast.error(data.message);
       }

@@ -18,7 +18,7 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
   async function handlePickupParcel(orderId) {
     try {
       const response = await AxiosIntances.put(
-        `/delivery/picked-up?order-id=${orderId}`,
+        `/delivery/picked-up?order-id=${orderId}`
       );
 
       console.log(await response.data);
@@ -52,7 +52,7 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
           headers: {
             "x-auth-token": apiAuthToken,
           },
-        },
+        }
       );
       const result = await apiResponse.json();
 
@@ -60,6 +60,9 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
 
       if (result?.success) {
         toast("Drop parcel successful");
+
+        socket.emit("parcelDropOffByRider", result.result);
+
         location.reload();
       }
     } catch (error) {

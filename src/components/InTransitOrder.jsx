@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button, Card, Space } from "antd";
 import { apiAuthToken, apiPath, socketServer } from "../../secret";
@@ -10,9 +10,23 @@ import AxiosIntances from "../utils/AxiosInstances";
 import { Link } from "react-router-dom";
 import { BsFillChatLeftTextFill } from "react-icons/bs";
 import { useSocket } from "../authContext/socketProvider";
+import AddonList from "./AddonList";
 
 export default function InTransit({ inTransitOrder, setInTransitOrder }) {
   const { socket } = useSocket();
+
+  // addons
+  const [addons, setAddons] = useState([]);
+
+  useEffect(() => {
+    if (inTransitOrder) {
+      inTransitOrder?.items?.some((item) => {
+        setAddons((prev) => [...prev, ...item.addons]);
+      });
+
+      console.log(inTransitOrder.items);
+    }
+  }, [inTransitOrder]);
 
   //handle pickup parcel
   async function handlePickupParcel(orderId) {
@@ -98,44 +112,48 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
           </Link>
 
           <p className=" mt-2 font-bold">
-            Order ID:{" "}
-            <span className="font-bold text-blue-500 uppercase">
+            O.ID:{" "}
+            <span className="font-bold ">
               {inTransitOrder._id}
             </span>
           </p>
           <p className=" mt-2 font-bold">
-            Restaurant ID:{" "}
-            <span className="font-bold text-blue-500">
+            R.ID:{" "}
+            <span className="font-bold ">
               {inTransitOrder.restaurantId}
             </span>
           </p>
 
           <p className="font-bold">
             Status:{" "}
-            <span className="text-white px-4 py-1 bg-blue-500">
+            <span className=" px-4 py-1 text-orange-700">
               {inTransitOrder?.status}
             </span>
           </p>
           <p className=" mt-2 font-bold">
             Pickup Location:{" "}
-            <span className="font-bold text-blue-500">
+            <span className="font-bold ">
               {inTransitOrder.restaurantLocation}
             </span>
           </p>
           <p className=" mt-2 font-bold">
             Drop Location:{" "}
-            <span className="font-bold text-blue-500">
+            <span className="font-bold ">
               {" "}
               {inTransitOrder.dropLocation}
             </span>
           </p>
+          <h1>Payment method- {inTransitOrder.peymentMethod}</h1>
+          <h1>Delivery Charge- {inTransitOrder.riderFee} BDT</h1>
+          <h1>Tips- {inTransitOrder.tip} BDT</h1>
           <div>
-            <table className="w-full">
+            <table className="w-full text-sm">
               <thead>
                 <tr>
                   <th className="border px-2 py-1 text-center">Items Name</th>
                   <th className="border px-2 py-1 text-center">Quanity</th>
-                  <th className="border px-2 py-1 text-center">Price</th>
+                  {/* <th className="border px-2 py-1 text-center">Price</th>
+                  <th className="border px-2 py-1 text-center">Sub Total</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -148,18 +166,28 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
                       <td className="border px-2 py-1 text-center">
                         {item.quantity}
                       </td>
-                      <td className="border px-2 py-1 text-center">
+                      {/* <td className="border px-2 py-1 text-center">
                         {item.offerPrice}
                       </td>
+                      <td className="border px-2 py-1 text-center">
+                        {item.quantity * item.offerPrice}
+                      </td> */}
                     </tr>
                   );
                 })}
               </tbody>
             </table>
           </div>
+
+          <div>
+            <h1>addons list</h1>
+
+            <AddonList addons={addons} />
+          </div>
+
           <div>
             <h1 className="text-xl my-4 font-bold">
-              Total Amount: <span>{inTransitOrder.totalAmount}</span>
+              Total Amount: <span>{inTransitOrder.totalAmount.toFixed()}</span>
             </h1>
           </div>
           {/* <div>

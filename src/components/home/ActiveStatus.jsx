@@ -61,7 +61,7 @@ export default function ActiveStatus() {
 
   return (
     <div className="w-full border shadow-md relative overflow-hidden px-4 py-2 flex items-center justify-between">
-      <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-2 border shadow-lg">
+      <div className="absolute bg-white -top-2 left-1/2 -translate-x-1/2 px-3 py-2 border shadow-lg">
         <span>online</span>
         {online ? (
           <span className="w-1 h-1 rounded-full mx-3 inline-block bg-green-600 p-1"></span>
@@ -71,12 +71,16 @@ export default function ActiveStatus() {
       </div>
       <div>
         <h1 className="font-extrabold ">
-          Status:
+          session:
           <span className="px-2 p-1 bg-blue-400 text-white rounded-md shadow-md text-sm">
             {session}
           </span>
         </h1>
-        <h1 className="text-sm">Open to take order</h1>
+        <h1 className="text-sm">
+          {session === "out for delivery"
+            ? "currently not available"
+            : "Open to take order"}
+        </h1>
       </div>
 
       <div>
@@ -85,7 +89,9 @@ export default function ActiveStatus() {
         ) : (
           <Switch
             disabled={session === "out for delivery" ? true : false}
-            checked={session === "available" ? true : false}
+            checked={
+              session === "available" || "out for delivery" ? true : false
+            }
             onChange={onChange}
           />
         )}

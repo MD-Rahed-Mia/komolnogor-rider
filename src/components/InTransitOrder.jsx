@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { BsFillChatLeftTextFill } from "react-icons/bs";
 import { useSocket } from "../authContext/socketProvider";
 import AddonList from "./AddonList";
+import TrackOrderMap from "./maps/TrackOrderMap";
 
 export default function InTransit({ inTransitOrder, setInTransitOrder }) {
   const { socket } = useSocket();
@@ -112,16 +113,11 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
           </Link>
 
           <p className=" mt-2 font-bold">
-            O.ID:{" "}
-            <span className="font-bold ">
-              {inTransitOrder._id}
-            </span>
+            O.ID: <span className="font-bold ">{inTransitOrder._id}</span>
           </p>
           <p className=" mt-2 font-bold">
             R.ID:{" "}
-            <span className="font-bold ">
-              {inTransitOrder.restaurantId}
-            </span>
+            <span className="font-bold ">{inTransitOrder.restaurantId}</span>
           </p>
 
           <p className="font-bold">
@@ -138,14 +134,14 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
           </p>
           <p className=" mt-2 font-bold">
             Drop Location:{" "}
-            <span className="font-bold ">
-              {" "}
-              {inTransitOrder.dropLocation}
-            </span>
+            <span className="font-bold "> {inTransitOrder.dropLocation}</span>
           </p>
           <h1>Payment method- {inTransitOrder.peymentMethod}</h1>
           <h1>Delivery Charge- {inTransitOrder.riderFee} BDT</h1>
           <h1>Tips- {inTransitOrder.tip} BDT</h1>
+          <div>
+            <a href={`tel:${inTransitOrder.customerPhone}`}>Call now</a>
+          </div>
           <div>
             <table className="w-full text-sm">
               <thead>
@@ -219,12 +215,12 @@ export default function InTransit({ inTransitOrder, setInTransitOrder }) {
               </Popconfirm>
             ) : null}
           </div>
+
+          <div>
+            <TrackOrderMap coords={inTransitOrder.coords} />
+          </div>
         </Card>
       </Space>
-
-      <div>
-        <TrackOrder />
-      </div>
     </div>
   );
 }

@@ -7,6 +7,8 @@ import { Button, Modal } from "antd";
 import axios from "axios";
 import { apiAuthToken, apiPath } from "../../secret";
 import ActiveStatus from "../components/home/ActiveStatus";
+import HomeMap from "../components/maps/HomeMap";
+import TrackOrderMap from "../components/maps/TrackOrderMap";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -73,10 +75,14 @@ export default function Home() {
                 id="google-maps-display"
                 className="w-[300px] mx-auto mt-12 h-[380px]"
               >
-                <iframe
+                {/* <iframe
                   aria-controls="true"
                   src="https://www.google.com/maps/embed/v1/place?q=chattogram&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"
-                ></iframe>
+                ></iframe> */}
+
+                <HomeMap />
+
+                {/* <TrackOrderMap /> */}
               </div>
             </div>
           </div>

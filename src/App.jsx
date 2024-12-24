@@ -15,6 +15,7 @@ import { SocketProvider, useSocket } from "./authContext/socketProvider";
 import AcceptOrder from "./components/AcceptOrder";
 import { useEffect, useState } from "react";
 import LiveChat from "./components/Livechat";
+import ToasterNotifation from "./components/toaster/Notification";
 
 function App() {
   const { socket } = useSocket();
@@ -45,6 +46,11 @@ function App() {
           setAcceptOrderData={setAcceptOrderData}
         />
       )}
+
+      {/* notification */}
+
+      <ToasterNotifation />
+
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />

@@ -4,10 +4,14 @@ import { apiAuthToken, apiPath } from "../../secret";
 import { useAuth } from "../authContext/authProvider";
 import { toast } from "alert";
 import { useNavigate } from "react-router-dom";
+import { useSocket } from "../authContext/socketProvider";
 
 export default function AcceptOrder({ currentOrder, setAcceptOrderData }) {
   const { id } = useAuth();
   const [timer, setTimer] = useState(30);
+
+  // socket
+  const { socket } = useSocket();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -54,6 +58,9 @@ export default function AcceptOrder({ currentOrder, setAcceptOrderData }) {
 
       if (result) {
         toast("Order accepted.");
+        if (socket) {
+          socket.emit("notifyRestaurant", result.order);
+        }
         setAcceptOrderData(null);
       }
     } catch (error) {

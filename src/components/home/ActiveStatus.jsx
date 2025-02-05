@@ -33,7 +33,6 @@ export default function ActiveStatus() {
       }`
     );
 
-    console.log(data);
     if (data.success) {
       setSession(data.session);
       setLoading(false);
@@ -45,6 +44,9 @@ export default function ActiveStatus() {
   useEffect(() => {
     if (rider) {
       setLoading(false);
+
+      console.log("current session : ", rider.session);
+
       setSession(rider.session);
     }
 
@@ -60,8 +62,8 @@ export default function ActiveStatus() {
   }, [isActive]);
 
   return (
-    <div className="w-full border shadow-md relative overflow-hidden px-4 py-2 flex items-center justify-between">
-      <div className="absolute bg-white -top-2 left-1/2 -translate-x-1/2 px-3 py-2 border shadow-lg">
+    <div className="w-full border shadow-md relative overflow-hidden px-4 py-4 flex items-center justify-between">
+      <div className="fixed bg-white top-1 right-4  text-[10px] px-2 z-50 border shadow-lg">
         <span>online</span>
         {online ? (
           <span className="w-1 h-1 rounded-full mx-3 inline-block bg-green-600 p-1"></span>
@@ -76,11 +78,11 @@ export default function ActiveStatus() {
             {session}
           </span>
         </h1>
-        <h1 className="text-sm">
+        {/* <h1 className="text-sm">
           {session === "out for delivery"
             ? "currently not available"
             : "Open to take order"}
-        </h1>
+        </h1> */}
       </div>
 
       <div>

@@ -56,34 +56,13 @@ export default function Home() {
   return (
     <PrivateRoute>
       <RiderLayout>
-        <div className="w-full">
+        <div className="w-full ">
           <div>
-            <ActiveStatus />
-          </div>
-
-          <div>
-            <img
-              src="/images/delivery_man.png"
-              className="w-2/5 mx-auto block mt-5"
-              alt="delivery man"
-            />
-          </div>
-
-          <div>
-            <div className="w-[300px] mx-auto mt-12 h-[380px]">
-              <div
-                id="google-maps-display"
-                className="w-[300px] mx-auto mt-12 h-[380px]"
-              >
-                {/* <iframe
-                  aria-controls="true"
-                  src="https://www.google.com/maps/embed/v1/place?q=chattogram&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"
-                ></iframe> */}
-
-                <HomeMap />
-
-                {/* <TrackOrderMap /> */}
-              </div>
+            <div
+              id="google-maps-display"
+              className="w-full mx-auto mt-12 h-[80vh]"
+            >
+              <HomeMap />
             </div>
           </div>
         </div>

@@ -12,7 +12,7 @@ export default function RiderNavigation() {
 
   return (
     <div>
-      <div className="fixed bg-white bottom-0 left-0 min-h-[60px] shadow-lg border w-full grid grid-cols-5 place-content-center justify-items-center">
+      <div className="fixed bg-white bottom-0 left-0 min-h-[60px] shadow-lg border w-full grid grid-cols-4 place-content-center justify-items-center">
         <NavLink
           to={"/"}
           style={({ isActive }) => {
@@ -47,7 +47,7 @@ export default function RiderNavigation() {
           <TbTruckDelivery />
         </NavLink>
 
-        <NavLink
+        {/* <NavLink
         to={"/notification"}
           style={({ isActive }) => {
             return {
@@ -57,7 +57,7 @@ export default function RiderNavigation() {
           className="text-xl cursor-pointer text-[#89A8B2] w-10 h-10  flex items-center justify-center"
         >
           <IoMdNotifications />
-        </NavLink>
+        </NavLink> */}
 
         <NavLink
           onClick={() => setIsMenu(!isMenu)}

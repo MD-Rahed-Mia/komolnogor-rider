@@ -16,6 +16,7 @@ import AcceptOrder from "./components/AcceptOrder";
 import { useEffect, useState } from "react";
 import LiveChat from "./components/Livechat";
 import ToasterNotifation from "./components/toaster/Notification";
+import ActiveStatus from "./components/home/ActiveStatus";
 
 function App() {
   const { socket } = useSocket();
@@ -46,6 +47,8 @@ function App() {
           setAcceptOrderData={setAcceptOrderData}
         />
       )}
+
+      <ActiveStatus />
 
       {/* notification */}
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import RiderLayout from "./layout/RiderLayout";
 import AcceptOrder from "../components/AcceptOrder";
 import Loading from "../components/Loading";
@@ -19,37 +19,24 @@ export default function Waiting() {
   let [timer, setTimer] = useState(15);
 
   // Fetch the current order for the rider
-  useEffect(() => {
+  useMemo(() => {
     async function fetchRiderCurrentOrder() {
       try {
         const response = await AxiosIntances.get(
           `${apiPath}/rider/current-order/${id}`
         );
 
-        console.log(await response.data);
+        console.log("current order is : ", response.data);
 
         const data = await response.data;
 
         if (data.success) {
-          setInTransitOrder(data.order);
+          if (data.order.status === "Delivered") {
+            setInTransitOrder(null);
+          } else {
+            setInTransitOrder(data.order);
+          }
         }
-
-        // const apiResponse = await fetch(
-        //   `${apiPath}/rider/current-order/${localRider?.id}`,
-        //   {
-        //     method: "GET",
-        //     headers: {
-        //       "x-auth-token": apiAuthToken,
-        //     },
-        //   }
-        // );
-        // const result = await apiResponse.json();
-
-        // if (result?.success) {
-        //   setInTransitOrder(result?.order);
-        // } else {
-        //   setInTransitOrder(null);
-        // }
       } catch (error) {
         console.log(error);
         if (error.response) {
@@ -80,7 +67,7 @@ export default function Waiting() {
 
   return (
     <RiderLayout>
-      <ActiveStatus />
+      {/* <ActiveStatus /> */}
 
       {currentOrder ? (
         <AcceptOrder

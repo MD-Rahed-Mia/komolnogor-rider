@@ -7,10 +7,7 @@ export default function HomeMap() {
 
   const { socket } = useSocket();
 
-  const [coordinates, setCoordinates] = useState({
-    lat: 22.865322,
-    lng: 91.097044,
-  });
+  const [coordinates, setCoordinates] = useState(null);
 
   const mapStyles = {
     height: "300px",
@@ -22,9 +19,9 @@ export default function HomeMap() {
       console.log(`geolocation is available.`);
 
       const watchId = navigator.geolocation.watchPosition((position) => {
-        console.log(
-          `rider current position is : ${position.coords.latitude} & ${position.coords.longitude}`
-        );
+        // console.log(
+        //   `rider current position is : ${position.coords.latitude} & ${position.coords.longitude}`
+        // );
 
         setCoordinates({
           lat: position.coords.latitude,
@@ -52,7 +49,7 @@ export default function HomeMap() {
 
   useEffect(() => {
     setCurrentLocation();
-  }, [socket]);
+  }, []);
 
   const onLoad = (mapInstance) => {
     mapRef.current = mapInstance;
@@ -98,24 +95,26 @@ export default function HomeMap() {
   };
 
   return (
-    <div>
-      <LoadScript googleMapsApiKey="AIzaSyBbE_BV395ODtFKApBX_oK0KselqP0Tjcs">
-        <GoogleMap
-          id="map"
-          mapContainerStyle={mapStyles}
-          center={coordinates}
-          zoom={15}
-          onLoad={onLoad}
-          onIdle={handleMapIdle}
-          options={{
-            gestureHandling: "greedy",
-            fullscreenControl: false,
-            streetViewControl: false,
-          }}
-        >
-          <Marker position={coordinates} />
-        </GoogleMap>
-      </LoadScript>
-    </div>
+    <>
+      {coordinates && (
+        <LoadScript googleMapsApiKey="AIzaSyBbE_BV395ODtFKApBX_oK0KselqP0Tjcs">
+          <GoogleMap
+            id="map"
+            mapContainerStyle={mapStyles}
+            center={coordinates}
+            zoom={15}
+            onLoad={onLoad}
+            onIdle={handleMapIdle}
+            options={{
+              gestureHandling: "greedy",
+              fullscreenControl: false,
+              streetViewControl: false,
+            }}
+          >
+            <Marker position={coordinates} />
+          </GoogleMap>
+        </LoadScript>
+      )}
+    </>
   );
 }

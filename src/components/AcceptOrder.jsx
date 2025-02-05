@@ -194,7 +194,7 @@ export default function AcceptOrder({ currentOrder, setAcceptOrderData }) {
           </div>
           <div>
             <h1 className="text-3xl font-bold text-center text-blue-500">
-              BDT <span>45</span>
+              <span>{currentOrder.riderFee.toFixed()} TK</span>
             </h1>
           </div>
           <div className="flex items-center justify-center gap-4 mt-4">

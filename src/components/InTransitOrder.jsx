@@ -18,6 +18,8 @@ import DottedBorder from "./DottedBorder";
 export default function InTransit({ inTransitOrder, setInTransitOrder }) {
   const { socket } = useSocket();
 
+  console.log("current order details: ", inTransitOrder);
+
   // addons
   const [addons, setAddons] = useState([]);
 

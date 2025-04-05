@@ -49,7 +49,7 @@ const LiveChat = () => {
 
   useEffect(() => {
     if (socket) {
-      socket.on("sendSmsToRider", (data) => {
+      socket.on("userSendAMessageToRider", (data) => {
         const parseData = JSON.parse(data);
         console.log(parseData);
         setMessages((prev) => [...prev, parseData]);
